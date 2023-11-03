@@ -15,5 +15,6 @@ auto main(int argc, char **argv) -> int
      * More info at https://fmt.dev/latest/api.html
      */
     fmt::print("Hello, {}!\n", "hello");
+    
     return 0; /* exit gracefully*/
 }
