@@ -38,9 +38,9 @@ Im Erfolgsfall müssen jetzt nur noch die Daten in Ihren Fork gepusht werden:
 git push origin main
 ```
 
-## Übungsaufgaben
+## Linux Shell
 
-- [Übungsaufgabe Nr. 1](exercise-001/README.md)
+Sie finden einen guten Überblick über die verfügbaren Komandos unter: [linux-cheatsheet](https://gist.github.com/khazeamo/f762f532bfbc17d5bf396e9d4c2a9586#commands)
 
 ## Hilfreiche Links
 
