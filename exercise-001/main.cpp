@@ -14,6 +14,7 @@ int data = 4711;
 // .rodata segmenet
 const int rodata = 42;
 
+
 auto main(int argc, char **argv) -> int
 {
     /**
