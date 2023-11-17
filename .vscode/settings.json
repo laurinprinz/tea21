@@ -105,7 +105,7 @@
         "armadillo": "cpp",
         "shared_mutex": "cpp"
     },
-    "cSpell.language": "en,en-GB",
+    "cSpell.language": "en,en-GB,de",
     "cSpell.words": [
         "codespace",
         "Codespaces",
