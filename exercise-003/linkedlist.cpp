@@ -2,15 +2,10 @@
 
 LinkedList::~LinkedList()
 {
-  auto list_has_entries = true;
-  while(list_has_entries){
+  while( size() != 0 ){
     auto tmp = m_head;
-    if(remove(m_head)){
+    if(remove(tmp)){
       delete tmp;
-    }
-    else
-    {
-      list_has_entries = false;
     }
   }
 }
@@ -21,7 +16,7 @@ bool LinkedList::insert_tail(LinkedListNode *node)
   if (nullptr == node) {
     return ret;
   }
-  if (nullptr == m_head) {
+  if (nullptr == m_tail ) {
     /* empty list*/
     m_head = node;
     m_tail = node;
@@ -95,7 +90,7 @@ bool LinkedList::remove(LinkedListNode *node)
 {
   bool ret = false;
   auto tmp = m_head;
-  if (m_head == nullptr)
+  if (m_head == nullptr || m_tail == nullptr)
   {
     fmt::println("Can not remove element from empty list");
     return false;
@@ -104,6 +99,11 @@ bool LinkedList::remove(LinkedListNode *node)
   {
     fmt::println("Remove head of the list");
     m_head = tmp->pNext;
+    if(tmp == m_tail)
+    {
+      m_head = nullptr;
+      m_tail = nullptr;
+    }
     return true;
   }
   else
@@ -112,11 +112,12 @@ bool LinkedList::remove(LinkedListNode *node)
     {
       if (tmp->pNext == node)
       {
-        if (m_tail == tmp->pNext)
+        if (m_tail == node)
         {
-          m_head = tmp;
+          fmt::println("Removing the tail of the list");
+          m_tail = tmp;
         } 
-        break;
+        return true;
       }
       tmp = tmp->pNext;
     }
@@ -148,6 +149,10 @@ void LinkedList::traverse(std::function<void(const std::string &)> func)
 
 void LinkedList::traverse(std::function<void(LinkedListNode *node)> func)
 {
+  if(m_head == nullptr|| m_tail==nullptr)
+  {
+    return;
+  }
   for (auto tmp = m_head; tmp != nullptr; tmp = tmp->pNext) {
     func(tmp);
   }
