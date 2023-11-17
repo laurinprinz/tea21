@@ -2,9 +2,16 @@
 
 LinkedList::~LinkedList()
 {
-  for (auto tmp = m_head; tmp != nullptr; tmp = tmp->pNext /* prepare the next in the row */) {
-    auto elem = tmp; /* save the element to be deleted */
-    delete elem;
+  auto list_has_entries = true;
+  while(list_has_entries){
+    auto tmp = m_head;
+    if(remove(m_head)){
+      delete tmp;
+    }
+    else
+    {
+      list_has_entries = false;
+    }
   }
 }
 
@@ -14,7 +21,13 @@ bool LinkedList::insert_tail(LinkedListNode *node)
   if (nullptr == node) {
     return ret;
   }
-  // insert your code here....
+  if (nullptr == m_head) {
+    /* empty list*/
+    m_head = node;
+    m_tail = node;
+  } else {
+    return insert_after(m_tail, node);
+  }
   return ret;
 }
 
@@ -24,7 +37,13 @@ bool LinkedList::insert_head(LinkedListNode *node)
   if (nullptr == node) {
     return ret;
   }
-  // insert your code here....
+  if (nullptr == m_head) {
+    /* empty list*/
+    m_head = node;
+    m_tail = node;
+  } else {
+    ret = insert_before(m_head, node);
+  }
   return ret;
 }
 
@@ -34,7 +53,12 @@ bool LinkedList::insert_after(LinkedListNode *loc, LinkedListNode *node)
   if ((nullptr == loc) || (nullptr == node)) {
     return ret;
   }
-  // insert your code here ....
+  if (nullptr == loc->pNext) {
+    /*End of the list*/
+    m_tail = node;
+  }
+  loc->pNext = node;
+  ret = true;
   return ret;
 }
 
@@ -44,14 +68,67 @@ bool LinkedList::insert_before(LinkedListNode *loc, LinkedListNode *node)
   if ((nullptr == loc) || (nullptr == node)) {
     return ret;
   }
-  // Insert your code here....
+  if (m_head == loc) {
+    node->pNext = m_head;
+    m_head = node;
+    ret = true;
+  } else {
+    auto tmp = m_head;
+    while (tmp) {
+      if (tmp->pNext == loc) {
+        break;
+      }
+      tmp = tmp->pNext;
+    }
+    if (tmp->pNext == loc) {
+      node->pNext = loc;
+      tmp->pNext = loc;
+      ret = true;
+    } else {
+      ret = false;
+    }
+  }
   return ret;
 }
 
 bool LinkedList::remove(LinkedListNode *node)
 {
   bool ret = false;
-  // insert your code here ...
+  auto tmp = m_head;
+  if (m_head == nullptr)
+  {
+    fmt::println("Can not remove element from empty list");
+    return false;
+  }
+  if (m_head == node)
+  {
+    fmt::println("Remove head of the list");
+    m_head = tmp->pNext;
+    return true;
+  }
+  else
+  {
+    while (tmp)
+    {
+      if (tmp->pNext == node)
+      {
+        if (m_tail == tmp->pNext)
+        {
+          m_head = tmp;
+        } 
+        break;
+      }
+      tmp = tmp->pNext;
+    }
+  }
+
+  if (tmp->pNext == node) {
+    tmp->pNext = tmp->pNext->pNext;
+    ret = true;
+  } else {
+    /* Element not found */
+    ret = false;
+  }
   return ret;
 }
 
