@@ -91,17 +91,18 @@ bool BMP::read(const std::string& filename)
     } 
 
     //fmt::println("{}, {}", padding, fill);
-
-    uint buffer [infoHeader.biHeight][infoHeader.biWidth+fill];
+    int buffer [infoHeader.biHeight][infoHeader.biWidth];
+    int filledBuffer [infoHeader.biHeight][infoHeader.biWidth+fill];
 
     
 
-    for(int i = infoHeader.biHeight; i > 0; i--)
+    for(int i = 0; i < infoHeader.biHeight; i++)
     {
+        int count = 0;
         //fmt::println("Alpha von Pixelreihe {}: ", i);
         for(int x = 0; x < infoHeader.biWidth; x++)
         {
-            
+               
             read_value(input_file, &pixels.red);
             read_value(input_file, &pixels.green);
             read_value(input_file, &pixels.blue);
@@ -113,17 +114,23 @@ bool BMP::read(const std::string& filename)
             
         }
 
-        for (int u = 0; u < fill; u++)
+        for (int u = 0; u < infoHeader.biWidth; ++u)
         {
-            buffer[i][infoHeader.biWidth + u] = {0};
+            filledBuffer[i][u] = buffer[i][u];
         }
+        
     }
 
-
+    for (int c = 0; c < infoHeader.biWidth+fill; c++)
+    {
+        fmt::print("{}, ", filledBuffer[0][c]);
+    }
+    
+    
     std::string asciiImage;
-    std::vector<char> asciiChars = {' ', '.', ':', '-', '=', '+', '*', '#', '%', '@'};
+    std::vector<char> asciiChars = {'_', '.', ':', '-', '=', '+', '*', '#', '%', '@', ' '};
 
-    for(int i = infoHeader.biHeight; i > 0; i--)
+    for(int i = 0; i < infoHeader.biHeight; i++)
     {
         for(int x = 0; x < infoHeader.biWidth; x++)
         {
